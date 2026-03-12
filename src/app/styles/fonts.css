@@ -1,0 +1,34 @@
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/DMSans-VariableFont.woff2') format('woff2 supports variations');
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+  font-variation-settings: 'wght' 400;
+}
+
+@layer utilities {
+  .font-extralight {
+    font-variation-settings: 'wght' 200;
+  }
+
+  .font-light {
+    font-variation-settings: 'wght' 300;
+  }
+
+  .font-normal {
+    font-variation-settings: 'wght' 400;
+  }
+
+  .font-medium {
+    font-variation-settings: 'wght' 500;
+  }
+
+  .font-semibold {
+    font-variation-settings: 'wght' 600;
+  }
+
+  .font-bold {
+    font-variation-settings: 'wght' 700;
+  }
+}

@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+@layer base {
+  :root {
+    --default-font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    --default-font-size: 16px;
+    --default-line-height: 1.6;
+  }
+}
+
+@theme {
+  --color-primary: #FFFFFF;
+  --color-secondary: #0B0F14;
+}
+
+body {
+  font-size: var(--default-font-size);
+  line-height: var(--default-line-height);
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+}
+
+.container {
+  @apply mx-auto px-4 xl:px-12 max-w-360;
+}
+

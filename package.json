@@ -14,7 +14,8 @@
     "lint": "run-s lint:*",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write --experimental-cli src/",
+    "lint-fsd": "npx steiger ./src"
   },
   "dependencies": {
     "pinia": "^3.0.4",
@@ -43,10 +44,12 @@
     "oxlint": "~1.50.0",
     "prettier": "3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "steiger": "^0.5.11",
     "tailwindcss": "^4.2.1",
     "typescript": "~5.9.3",
     "vite": "^7.3.1",
     "vite-plugin-vue-devtools": "^8.0.6",
+    "vite-svg-loader": "^5.1.1",
     "vitest": "^4.0.18",
     "vue-tsc": "^3.2.5"
   },
