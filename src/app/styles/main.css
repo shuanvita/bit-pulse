@@ -10,11 +10,20 @@
 }
 
 @theme {
-  --color-primary: #FFFFFF;
+  --color-primary: #E6EEF3;
   --color-secondary: #0B0F14;
+  --color-accent: #0F161A;
+  --color-accent-500: #0E1418;
+  --color-primary-border: rgba(255, 255, 255, 0.176);
+  --color-yellow-400: #F7931A;
+}
+
+html, #app {
+  height: 100%;
 }
 
 body {
+  height: 100%;
   font-size: var(--default-font-size);
   line-height: var(--default-line-height);
   background-color: var(--color-secondary);
