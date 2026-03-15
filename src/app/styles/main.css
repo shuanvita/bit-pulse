@@ -16,6 +16,8 @@
   --color-accent-500: #0E1418;
   --color-primary-border: rgba(255, 255, 255, 0.176);
   --color-yellow-400: #F7931A;
+  --color-gray-400: #94A3B8;
+  --color-green-400: #16A34A;
 }
 
 html, #app {
@@ -31,6 +33,6 @@ body {
 }
 
 .container {
-  @apply mx-auto px-4 xl:px-12 max-w-360;
+  @apply mx-auto px-5 lg:px-12 max-w-360;
 }
 

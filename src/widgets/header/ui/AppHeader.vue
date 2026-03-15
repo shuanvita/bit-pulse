@@ -3,7 +3,7 @@ import { AppLogo } from '@/shared/ui/logo'
 </script>
 
 <template>
-  <header class="border-primary-border border-b py-6">
+  <header class="border-primary-border border-b py-4 lg:py-6">
     <div class="container">
       <AppLogo />
     </div>

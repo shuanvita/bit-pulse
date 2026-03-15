@@ -1,3 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { CryptoCard } from '@/entities/cryptoCard'
+</script>
 
-<template>Home Page</template>
+<template>
+  <CryptoCard />
+</template>
