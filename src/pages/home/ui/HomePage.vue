@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { CryptoCard } from '@/entities/cryptoCard'
+import CryptoWatchList from '@/widgets/cryptoWatchList/CryptoWatchList.vue'
 </script>
 
 <template>
-  <CryptoCard />
+  <CryptoWatchList />
 </template>

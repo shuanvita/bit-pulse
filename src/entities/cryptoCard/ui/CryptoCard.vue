@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import VSvg from '@/shared/ui/vSvg'
 import { useCryptoCard } from '@/entities/cryptoCard/model/useCryptoCard.ts'
 const { price, change24h, isLoading } = useCryptoCard()
+
+const priceChange = computed(() => ({
+  sign: change24h.value >= 0 ? '+' : '-',
+  class: change24h.value >= 0 ? 'text-green-400' : 'text-red-400',
+}))
 </script>
 
 <template>
@@ -12,7 +18,7 @@ const { price, change24h, isLoading } = useCryptoCard()
     <div class="mb-8 flex items-start justify-between">
       <div class="flex items-center gap-4">
         <div class="rounded-full bg-yellow-400 p-2.5 lg:p-3">
-          <VSvg class="text-white" name="bitcoin" :size="32" />
+          <VSvg class="text-white" name="crypto/bitcoin" :size="32" />
         </div>
         <div>
           <div class="mb-0.5 text-[20px] font-semibold lg:mb-1 lg:text-[24px]">Bitcoin</div>
@@ -30,7 +36,7 @@ const { price, change24h, isLoading } = useCryptoCard()
       <div class="flex items-center gap-3">
         <div class="flex items-center gap-1">
           <VSvg class="text-green-400" name="outline/arrow-increase" :size="20" />
-          <div class="text-[16px] font-semibold text-green-400 lg:text-[18px]">{{ change24h }}</div>
+          <div :class="['text-[16px] font-semibold lg:text-[18px]', priceChange.class]">{{ priceChange.sign }}{{ change24h }}%</div>
         </div>
         <div class="text-[14px] font-medium text-gray-400">Past 24 hours</div>
       </div>
