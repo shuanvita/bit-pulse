@@ -2,11 +2,15 @@
 import { computed } from 'vue'
 import VSvg from '@/shared/ui/vSvg'
 import { useCryptoCard } from '@/entities/cryptoCard/model/useCryptoCard.ts'
+import type { CryptoCardProps } from '@/entities/cryptoCard/model/CryptoCard.types.ts'
 const { price, change24h, isLoading } = useCryptoCard()
 
+const props = defineProps<CryptoCardProps>()
+
 const priceChange = computed(() => ({
-  sign: change24h.value >= 0 ? '+' : '-',
-  class: change24h.value >= 0 ? 'text-green-400' : 'text-red-400',
+  sign: change24h.value > 0 ? '+' : '',
+  icon: change24h.value > 0 ? 'outline/arrow-increase' : 'outline/arrow-decrease',
+  class: change24h.value > 0 ? 'text-green-400' : 'text-red-400',
 }))
 </script>
 
@@ -35,8 +39,10 @@ const priceChange = computed(() => ({
       <div class="text-[40px] font-bold lg:text-[56px]/[1.1]">${{ price.toLocaleString() }}</div>
       <div class="flex items-center gap-3">
         <div class="flex items-center gap-1">
-          <VSvg class="text-green-400" name="outline/arrow-increase" :size="20" />
-          <div :class="['text-[16px] font-semibold lg:text-[18px]', priceChange.class]">{{ priceChange.sign }}{{ change24h }}%</div>
+          <VSvg :class="priceChange.class" :name="priceChange.icon" :size="20" />
+          <div :class="['text-[16px] font-semibold lg:text-[18px]', priceChange.class]">
+            {{ priceChange.sign }}{{ change24h }}%
+          </div>
         </div>
         <div class="text-[14px] font-medium text-gray-400">Past 24 hours</div>
       </div>

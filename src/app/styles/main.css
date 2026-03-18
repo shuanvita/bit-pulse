@@ -17,8 +17,10 @@
   --color-primary-border: rgba(255, 255, 255, 0.176);
   --color-yellow-400: #F7931A;
   --color-gray-400: #94A3B8;
+  --color-gray-800: #0E1418;
   --color-green-400: #16A34A;
   --color-red-400: #EF4444;
+  --color-purple-400: #7C3AED;
 }
 
 html, #app {
