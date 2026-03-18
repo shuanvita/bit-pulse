@@ -3,9 +3,9 @@ import { computed } from 'vue'
 import VSvg from '@/shared/ui/vSvg'
 import { useCryptoCard } from '@/entities/cryptoCard/model/useCryptoCard.ts'
 import type { CryptoCardProps } from '@/entities/cryptoCard/model/CryptoCard.types.ts'
-const { price, change24h, isLoading } = useCryptoCard()
 
 const props = defineProps<CryptoCardProps>()
+const { price, change24h, isLoading } = useCryptoCard(props.symbol)
 
 const priceChange = computed(() => ({
   sign: change24h.value > 0 ? '+' : '',
@@ -17,16 +17,18 @@ const priceChange = computed(() => ({
 <template>
   <div
     v-if="!isLoading"
-    class="bg-accent border-primary-border w-full rounded-xl border p-6 lg:h-73.5 lg:w-120 lg:p-10"
+    class="bg-accent border-primary-border w-full rounded-xl border p-6 lg:h-73.5 lg:p-10"
   >
     <div class="mb-8 flex items-start justify-between">
       <div class="flex items-center gap-4">
-        <div class="rounded-full bg-yellow-400 p-2.5 lg:p-3">
-          <VSvg class="text-white" name="crypto/bitcoin" :size="32" />
+        <div :class="['rounded-full p-2.5 lg:p-3', props.iconBgClass]">
+          <VSvg class="text-white" :name="props.icon" :size="32" />
         </div>
         <div>
-          <div class="mb-0.5 text-[20px] font-semibold lg:mb-1 lg:text-[24px]">Bitcoin</div>
-          <div class="text-[14px] text-gray-400">BTC / USD</div>
+          <div class="mb-0.5 text-[20px] font-semibold lg:mb-1 lg:text-[24px]">
+            {{ props.name }}
+          </div>
+          <div class="text-[14px] text-gray-400">{{ props.currency }}</div>
         </div>
       </div>
       <div class="bg-accent-500 flex items-center gap-2 rounded-xl px-3 py-2">

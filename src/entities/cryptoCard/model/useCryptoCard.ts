@@ -1,19 +1,13 @@
-import { ref, onUnmounted } from 'vue'
-import { createAssetWebSocket } from '@/shared/api/websocket/websocket.ts'
-import type { AssetWSMessage } from '@/shared/api/websocket/websocket.types.ts'
+import { computed } from 'vue'
+import { useCryptoStore } from '@/entities/cryptoCard/model/CryptoCard.store.ts'
 
-export const useCryptoCard = () => {
-  const price = ref(0)
-  const change24h = ref(0)
-  const isLoading = ref(true)
 
-  const { close } = createAssetWebSocket((data: AssetWSMessage) => {
-    price.value = data.price
-    change24h.value = data.change24h
-    isLoading.value = false
-  })
+export const useCryptoCard = (symbol: string) => {
+  // ← принимает symbol
+  const { prices, isLoading } = useCryptoStore()
 
-  onUnmounted(() => close())
+  const price = computed(() => prices.value[symbol]?.price ?? 0)
+  const change24h = computed(() => prices.value[symbol]?.change24h ?? 0)
 
   return {
     price,
