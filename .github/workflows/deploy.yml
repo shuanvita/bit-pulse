@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -24,6 +24,8 @@ jobs:
           cache: npm
 
       - run: npm ci
+      - name: Create .env
+        run: echo "VITE_GROQ_API_KEY=${{ secrets.VITE_GROQ_API_KEY }}" >> .env
       - run: npm run build
 
       - uses: actions/configure-pages@v4
