@@ -1,31 +1,85 @@
-import { useWebSocket } from '@vueuse/core'
-import type { AssetWSMessage } from '@/shared/api/websocket/websocket.types.ts'
+import { ref } from 'vue'
+import type { AssetWSMessage } from './websocket.types'
 
-const WS_URL =
-  'wss://stream.binance.com/ws/btcusdt@ticker/ethusdt@ticker/solusdt@ticker/bnbusdt@ticker'
+type MessageHandler = (data: AssetWSMessage) => void
 
-interface BinanceTickerRaw {
-  s: string // currency
-  c: string // current price
-  P: string // price change percent 24h
-}
+const WS_BASE = 'wss://stream.binance.com/ws'
 
-export function createAssetWebSocket(onMessage: (data: AssetWSMessage) => void) {
-  const { close } = useWebSocket(WS_URL, {
-    autoReconnect: { retries: 5, delay: 3000 },
-    onMessage(_, event) {
+export function createAssetWebSocket(onMessage: MessageHandler) {
+  let ws: WebSocket | null = null
+  let reconnectTimer: ReturnType<typeof setTimeout>
+  const subscribedSymbols = ref<Set<string>>(new Set())
+  let msgId = 1
+
+  function connect() {
+    ws = new WebSocket(WS_BASE)
+
+    ws.onopen = () => {
+      // Переподписываемся при реконнекте
+      if (subscribedSymbols.value.size > 0) {
+        sendSubscribe([...subscribedSymbols.value])
+      }
+    }
+
+    ws.onmessage = (event) => {
       try {
-        const raw: BinanceTickerRaw = JSON.parse(event.data)
-        if (!raw.c || !raw.s) return
+        const raw = JSON.parse(event.data)
+        // Игнорируем служебные ответы (result: null)
+        if (!raw.s || !raw.c) return
         onMessage({
           assetId: raw.s,
           price: parseFloat(raw.c),
           change24h: parseFloat(raw.P),
         })
       } catch {
-        console.warn('[ws] failed to parse message', event.data)
+        console.warn('[ws] parse error', event.data)
       }
+    }
+
+    ws.onclose = () => {
+      reconnectTimer = setTimeout(connect, 3000)
+    }
+  }
+
+  function sendSubscribe(symbols: string[]) {
+    if (ws?.readyState !== WebSocket.OPEN) return
+    const streams = symbols.map(s => `${s.toLowerCase()}@ticker`)
+    ws.send(JSON.stringify({
+      method: 'SUBSCRIBE',
+      params: streams,
+      id: msgId++,
+    }))
+  }
+
+  function sendUnsubscribe(symbols: string[]) {
+    if (ws?.readyState !== WebSocket.OPEN) return
+    const streams = symbols.map(s => `${s.toLowerCase()}@ticker`)
+    ws.send(JSON.stringify({
+      method: 'UNSUBSCRIBE',
+      params: streams,
+      id: msgId++,
+    }))
+  }
+
+  function subscribe(symbol: string) {
+    if (subscribedSymbols.value.has(symbol)) return
+    subscribedSymbols.value.add(symbol)
+    sendSubscribe([symbol])
+  }
+
+  function unsubscribe(symbol: string) {
+    subscribedSymbols.value.delete(symbol)
+    sendUnsubscribe([symbol])
+  }
+
+  connect()
+
+  return {
+    subscribe,
+    unsubscribe,
+    close: () => {
+      clearTimeout(reconnectTimer)
+      ws?.close()
     },
-  })
-  return { close }
+  }
 }
