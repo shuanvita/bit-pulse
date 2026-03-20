@@ -72,7 +72,7 @@ const confidenceLabel: Record<string, string> = {
     <button
       :disabled="isForecastLoading"
       class="flex w-full items-center justify-center gap-2 rounded-xl bg-purple-500/15 px-4 py-2.5 text-[13px] font-semibold text-purple-400 transition hover:bg-purple-500/25 disabled:cursor-not-allowed disabled:opacity-50"
-      @click="getForecast(price, change24h.value)"
+      @click="getForecast(price, change24h)"
     >
       <span
         v-if="isForecastLoading"
