@@ -4,7 +4,7 @@ import { CryptoCard } from '@/entities/cryptoCard'
 import AssetSearch from '@/shared/AssetSearch.vue'
 import { cryptoListData } from '@/shared/data'
 
-const { activeSymbols, removeSymbol } = useCryptoStore()
+const { activeSymbols, removeSymbol, prices } = useCryptoStore()
 
 // Метаданные карточки (иконка, имя) — мёрджим статику с динамикой
 const metaMap = Object.fromEntries(cryptoListData.map((c) => [c.symbol, c]))
@@ -30,6 +30,7 @@ function getMeta(symbol: string) {
       <div v-for="symbol in activeSymbols" :key="symbol" class="relative">
         <CryptoCard v-bind="getMeta(symbol)" />
         <button
+          v-if="prices[symbol]"
           class="absolute top-3 right-3 text-lg text-gray-500 transition hover:text-red-400"
           @click="removeSymbol(symbol)"
         >

@@ -5,7 +5,7 @@ import AiAnalysis from '@/features/aiAnalysis/AiAnalysis.vue'
 
 <template>
   <div class="flex flex-col gap-6">
-    <AiAnalysis />
+<!--    <AiAnalysis />-->
     <CryptoWatchList />
   </div>
 </template>

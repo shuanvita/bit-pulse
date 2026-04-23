@@ -1,40 +1,35 @@
-name: Deploy to GitHub Pages
+name: Deploy to Timeweb
 
 on:
   push:
     branches: [main]
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.2.2
 
-      - uses: actions/setup-node@v4.4.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - run: npm ci
+      - name: Install deps
+        run: npm ci
 
-      - name: Create .env
-        run: echo "VITE_GROQ_API_KEY=${{ secrets.VITE_GROQ_API_KEY }}" >> .env
+      - name: Build
+        run: npm run build
 
-      - run: npm run build
-
-      - uses: actions/configure-pages@v5
-
-      - uses: actions/upload-pages-artifact@v3
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          path: dist
-
-      - uses: actions/deploy-pages@v4
-        id: deployment
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: dist/
+          server-dir: ${{ secrets.FTP_DIR }}
+          dangerous-clean-slate: false
