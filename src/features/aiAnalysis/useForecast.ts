@@ -2,11 +2,6 @@ import { ref } from 'vue'
 import Groq from 'groq-sdk'
 import { fetchKlines } from '@/shared/api/binance'
 
-const client = new Groq({
-  apiKey: import.meta.env.VITE_GROQ_API_KEY,
-  dangerouslyAllowBrowser: true,
-})
-
 export type ForecastResult = {
   direction: 'up' | 'down'
   confidence: 'low' | 'medium' | 'high'
@@ -28,6 +23,18 @@ export function useForecast(symbol: string) {
     isLoading.value = true
     isOpen.value = true
     error.value = null
+
+    const apiKey = import.meta.env.VITE_GROQ_API_KEY?.trim()
+    if (!apiKey) {
+      error.value = 'Не настроен VITE_GROQ_API_KEY для production сборки.'
+      isLoading.value = false
+      return
+    }
+
+    const client = new Groq({
+      apiKey,
+      dangerouslyAllowBrowser: true,
+    })
 
     try {
       const klines = await fetchKlines(symbol, 14) // 14 дней для лучшего анализа
