@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { createAssetWebSocket } from '@/shared/api/websocket/websocket'
 import type { AssetWSMessage } from '@/shared/api/websocket/websocket.types'
 import { cryptoListData } from '@/shared/data'
