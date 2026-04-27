@@ -6,7 +6,7 @@ import { AppFooter } from '@/widgets/footer'
 <template>
   <div class="grid grid-rows-[auto_1fr_auto] min-h-full">
     <AppHeader />
-    <div class="container py-6 lg:py-0 grid place-items-start lg:place-items-center">
+    <div class="container py-6 lg:py-0 grid items-start justify-items-stretch lg:place-items-center">
       <RouterView />
     </div>
     <AppFooter />
